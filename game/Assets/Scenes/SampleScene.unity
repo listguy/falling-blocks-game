@@ -237,7 +237,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  camera: {fileID: 519420031}
 --- !u!65 &1818491097
 BoxCollider:
   m_ObjectHideFlags: 0
