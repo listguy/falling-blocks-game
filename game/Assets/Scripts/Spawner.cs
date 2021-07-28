@@ -26,7 +26,13 @@ public class Spawner : MonoBehaviour
             float halfPlayerHeight = 0.5f;
             Vector2 spawnPosition = new Vector2(Random.Range(-screenHalfSizeWorldUnits.x, screenHalfSizeWorldUnits.x), screenHalfSizeWorldUnits.y + halfPlayerHeight);
 
-            Instantiate(fallingBlockPrefab, spawnPosition, Quaternion.identity);
+            // create a new falling block
+            GameObject newFallingBlock = Instantiate(fallingBlockPrefab, spawnPosition, Quaternion.identity);
+            // give it a random size
+            float randomSide = Random.Range(-0.5f, 0.5f);
+            newFallingBlock.transform.localScale += new Vector3(randomSide, randomSide, 0);
+            // give it a random rotation around the Z axis
+            newFallingBlock.transform.Rotate(0, 0, Random.Range(-10f, 10f));
         }
     }
 }
