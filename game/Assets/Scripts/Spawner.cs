@@ -14,17 +14,29 @@ public class Spawner : MonoBehaviour
 
     // store the screen ratios as a (x,y)
     private Vector2 screenHalfSizeWorldUnits;
+
+    // Difficulity will grow every x seconds until difficulity hits five, where x = secondsBetweenDifficulityIncrease
+    public static float currentDifficulity = 1;
+    [SerializeField] float secondsBetweenDifficulityIncrease = 10;
+    private float nextDifficulityIncreaseTime;
     
     void Start()
     {
+        nextDifficulityIncreaseTime = Time.time + secondsBetweenDifficulityIncrease;
         screenHalfSizeWorldUnits = new Vector2(Camera.main.aspect * Camera.main.orthographicSize, Camera.main.orthographicSize);
     }
 
     void Update()
     {
+        if (Time.time > nextDifficulityIncreaseTime && currentDifficulity < 5)
+        {
+            currentDifficulity++;
+            nextDifficulityIncreaseTime = Time.time + secondsBetweenDifficulityIncrease;
+        }
+
         if(Time.time > nextSpawnTime)
         {
-            nextSpawnTime = Time.time + secondsBetweenSpawns;
+            nextSpawnTime = Time.time + (secondsBetweenSpawns * (1 - 0.1f * (currentDifficulity - 1)));
 
             float randomSideSize = Random.Range(spawnSizeMinMax.x, spawnSizeMinMax.y);
             float spawnAngle = Random.Range(-spawnAngleMax, spawnAngleMax);

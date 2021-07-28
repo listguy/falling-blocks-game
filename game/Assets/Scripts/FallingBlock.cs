@@ -8,7 +8,7 @@ public class FallingBlock : MonoBehaviour
     [SerializeField] float speed = 7f;
     private void Update()
     {
-        transform.Translate(Vector2.down * speed * Time.deltaTime);
+        transform.Translate(Vector2.down * speed * Time.deltaTime * (1 + Spawner.currentDifficulity / 5));
     }
 }
 
