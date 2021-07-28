@@ -5,10 +5,17 @@ using UnityEngine;
 public class FallingBlock : MonoBehaviour
 {
     
-    [SerializeField] float speed = 7f;
+    [SerializeField] Vector2 speedMinMax;
+    float speed;
+
+    private void Start()
+    {
+        speed = Mathf.Lerp(speedMinMax.x, speedMinMax.y, Difficulty.GetDifficultyPercent());
+        Destroy(gameObject, 4);
+    }
     private void Update()
     {
-        transform.Translate(Vector2.down * speed * Time.deltaTime * (1 + Spawner.currentDifficulity / 5));
+        transform.Translate(Vector2.down * speed * Time.deltaTime);
     }
 }
 

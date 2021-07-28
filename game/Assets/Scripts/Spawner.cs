@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] GameObject fallingBlockPrefab;
-    [SerializeField] float secondsBetweenSpawns = 1;
+    [SerializeField] Vector2 secondsBetweenSpawnsMinMax;
     private float nextSpawnTime;
 
     // store the minimum and maximum falling cube dise size as a (x,y)
@@ -15,28 +15,35 @@ public class Spawner : MonoBehaviour
     // store the screen ratios as a (x,y)
     private Vector2 screenHalfSizeWorldUnits;
 
+    // Difficulty hadler moved into a different script, Difficulty.cs, after video instructions
     // Difficulity will grow every x seconds until difficulity hits five, where x = secondsBetweenDifficulityIncrease
-    public static float currentDifficulity = 1;
-    [SerializeField] float secondsBetweenDifficulityIncrease = 10;
-    private float nextDifficulityIncreaseTime;
+    //public static float currentDifficulity = 1;
+    //[SerializeField] float secondsBetweenDifficulityIncrease = 10;
+    //private float nextDifficulityIncreaseTime;
     
     void Start()
     {
-        nextDifficulityIncreaseTime = Time.time + secondsBetweenDifficulityIncrease;
+        // Old difficulty handling
+        //nextDifficulityIncreaseTime = Time.time + secondsBetweenDifficulityIncrease;
         screenHalfSizeWorldUnits = new Vector2(Camera.main.aspect * Camera.main.orthographicSize, Camera.main.orthographicSize);
     }
 
     void Update()
     {
-        if (Time.time > nextDifficulityIncreaseTime && currentDifficulity < 5)
-        {
-            currentDifficulity++;
-            nextDifficulityIncreaseTime = Time.time + secondsBetweenDifficulityIncrease;
-        }
+        // Old difficulty handling
+        //if (Time.time > nextDifficulityIncreaseTime && currentDifficulity < 5)
+        //{
+        //    currentDifficulity++;
+        //    nextDifficulityIncreaseTime = Time.time + secondsBetweenDifficulityIncrease;
+        //}
 
         if(Time.time > nextSpawnTime)
         {
-            nextSpawnTime = Time.time + (secondsBetweenSpawns * (1 - 0.1f * (currentDifficulity - 1)));
+            // Old difficulty handling
+            // nextSpawnTime = Time.time + (secondsBetweenSpawns * (1 - 0.1f * (currentDifficulity - 1)));
+            float secondsBetweenSpawns = Mathf.Lerp(secondsBetweenSpawnsMinMax.y, secondsBetweenSpawnsMinMax.x, Difficulty.GetDifficultyPercent());
+            nextSpawnTime = Time.time + secondsBetweenSpawns;
+            Debug.Log(secondsBetweenSpawns);
 
             float randomSideSize = Random.Range(spawnSizeMinMax.x, spawnSizeMinMax.y);
             float spawnAngle = Random.Range(-spawnAngleMax, spawnAngleMax);
@@ -55,4 +62,4 @@ public class Spawner : MonoBehaviour
     }
 }
 
-// Spawning blocks code moved here from FallingBlock after video instructions
+// Spawning blocks code moved here from FallingBlock.cs after video instructions
