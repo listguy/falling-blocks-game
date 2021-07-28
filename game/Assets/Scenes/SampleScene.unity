@@ -357,3 +357,5 @@ MonoBehaviour:
   fallingBlockPrefab: {fileID: 3390380361062216975, guid: 2c6a5b3e8ba1a4e439fe343136c179d8,
     type: 3}
   secondsBetweenSpawns: 1
+  spawnSizeMinMax: {x: 0.2, y: 2.4}
+  spawnAngleMax: 15

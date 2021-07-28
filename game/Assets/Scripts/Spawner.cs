@@ -6,33 +6,39 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] GameObject fallingBlockPrefab;
     [SerializeField] float secondsBetweenSpawns = 1;
-
-    // store the sizes as a (x,y)
-    private Vector2 screenHalfSizeWorldUnits;
     private float nextSpawnTime;
-    // Start is called before the first frame update
+
+    // store the minimum and maximum falling cube dise size as a (x,y)
+    [SerializeField] Vector2 spawnSizeMinMax;
+    [SerializeField] float spawnAngleMax;
+
+    // store the screen ratios as a (x,y)
+    private Vector2 screenHalfSizeWorldUnits;
+    
     void Start()
     {
         screenHalfSizeWorldUnits = new Vector2(Camera.main.aspect * Camera.main.orthographicSize, Camera.main.orthographicSize);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(Time.time > nextSpawnTime)
         {
             nextSpawnTime = Time.time + secondsBetweenSpawns;
 
-            float halfPlayerHeight = 0.5f;
+            float randomSideSize = Random.Range(spawnSizeMinMax.x, spawnSizeMinMax.y);
+            float spawnAngle = Random.Range(-spawnAngleMax, spawnAngleMax);
+            float halfPlayerHeight = randomSideSize;
+
             Vector2 spawnPosition = new Vector2(Random.Range(-screenHalfSizeWorldUnits.x, screenHalfSizeWorldUnits.x), screenHalfSizeWorldUnits.y + halfPlayerHeight);
 
             // create a new falling block
-            GameObject newFallingBlock = Instantiate(fallingBlockPrefab, spawnPosition, Quaternion.identity);
+            GameObject newFallingBlock = Instantiate(fallingBlockPrefab, spawnPosition, Quaternion.Euler(Vector3.forward * spawnAngle));
             // give it a random size
-            float randomSide = Random.Range(-0.5f, 0.5f);
-            newFallingBlock.transform.localScale += new Vector3(randomSide, randomSide, 0);
-            // give it a random rotation around the Z axis
-            newFallingBlock.transform.Rotate(0, 0, Random.Range(-10f, 10f));
+            // Instead of adding to the existing scale:
+            //newFallingBlock.transform.localScale += new Vector3(randomSideSize, randomSideSize, 0);
+            // I'll just set the random one:
+            newFallingBlock.transform.localScale = Vector2.one * randomSideSize;
         }
     }
 }
