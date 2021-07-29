@@ -8,14 +8,22 @@ public class FallingBlock : MonoBehaviour
     [SerializeField] Vector2 speedMinMax;
     float speed;
 
+    float visibleHeightThreshold;
+
     private void Start()
     {
         speed = Mathf.Lerp(speedMinMax.x, speedMinMax.y, Difficulty.GetDifficultyPercent());
-        Destroy(gameObject, 4);
+
+        visibleHeightThreshold = -Camera.main.orthographicSize - transform.localScale.y;
     }
     private void Update()
     {
         transform.Translate(Vector2.down * speed * Time.deltaTime);
+
+        if(transform.position.y < visibleHeightThreshold)
+        {
+            Destroy(gameObject);
+        }
     }
 }
 
